@@ -1,16 +1,14 @@
-# 2
-# Формат вывода
-# Выведите «WIN», если игрок выиграл, и «FAIL» в противном случае.
+# «WIN» or «FAIL»
 
-# Ввод
+# input
 # 1 2 -3
 # FAIL
 
-# Ввод
+# input
 # 7 11 7
 # WIN
 
-# Ввод
+# input
 # 6 -2 0
 # WIN
 
@@ -27,12 +25,13 @@ triplets = [int(x) for x in input().split()]
 
 def get_result(triplets):
     flag = is_even(triplets[0])
-    
+
     for i in range(1, len(triplets)):
         if flag != is_even(triplets[i]):
             return 'FAIL'
     return 'WIN'
-    
+
+
 print(get_result(triplets=triplets))
 
 # if (is_even(a) + is_even(b) + is_even(c)) in (0, 3):

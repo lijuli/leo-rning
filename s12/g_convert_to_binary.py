@@ -1,4 +1,3 @@
-
 number = int(input())
 r = 1
 binary = ''

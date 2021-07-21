@@ -1,6 +1,6 @@
 import sys
 
-text_length = 19 #int(input())
+text_length = 19  # int(input())
 word = ''
 length = 0
 

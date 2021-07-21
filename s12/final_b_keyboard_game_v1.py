@@ -21,7 +21,6 @@ def read_pressed_keys():
 def find_max_score(keys, max_keys_pressed):
     total_keys_pressed = max_keys_pressed * 2
     score = 0
-    # score = sum[ count(value) for value in keys.values()]
     for value in keys.values():
         if value <= total_keys_pressed:
             score += 1
