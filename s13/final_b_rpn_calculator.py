@@ -1,4 +1,4 @@
-# https://contest.yandex.ru/contest/23759/run-report/52197389/
+# https://contest.yandex.ru/contest/23759/run-report/52204643/
 
 class Stack:
     def __init__(self):
@@ -15,7 +15,10 @@ class Stack:
         self.items.append(item)
 
     def pop(self):
-        return self.items.pop()
+        try:
+            return self.items.pop()
+        except IndexError as error:
+            print(f'pop from empty stack error:, {error}')
 
     def calculate(self, expression):
         for char in expression.split():
@@ -36,4 +39,3 @@ if __name__ == '__main__':
     s = Stack()
     result = s.calculate(input())
     print(result)
-

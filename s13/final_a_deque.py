@@ -1,4 +1,4 @@
-# https://contest.yandex.ru/contest/23759/run-report/52197418/
+# https://contest.yandex.ru/contest/23759/run-report/52204641/
 
 class Deque:
     def __init__(self, n):
@@ -9,70 +9,62 @@ class Deque:
         self.size = 0
 
     def push_front(self, value):
-        if self.size != self.max_n:
-            if self.size == 0:
-                self.deque[self.head] = value
-                self.size += 1
-            else:
-                self.head = (self.head - 1) % self.max_n
-                self.deque[self.head] = value
-                self.size += 1
+        if self.size == self.max_n:
+            raise IndexError
+
+        if self.size == 0:
+            self.deque[self.head] = value
+            self.size += 1
         else:
-            print('error')
+            self.head = (self.head - 1) % self.max_n
+            self.deque[self.head] = value
+            self.size += 1
 
     def push_back(self, value):
-        if self.size != self.max_n:
-            if self.size == 0:
-                self.deque[self.tail] = value
-                self.size += 1
-            else:
-                self.tail = (self.tail + 1) % self.max_n
-                self.deque[self.tail] = value
-                self.size += 1
+        if self.size == self.max_n:
+            raise IndexError
+
+        if self.size == 0:
+            self.deque[self.tail] = value
+            self.size += 1
         else:
-            print('error')
+            self.tail = (self.tail + 1) % self.max_n
+            self.deque[self.tail] = value
+            self.size += 1
 
     def pop_back(self):
-        if self.size != 0:
-            value = self.deque[self.tail]
-            print(value)
+        if self.size == 0:
+            raise IndexError
 
-            self.deque[self.tail] = None
-            self.size -= 1
-            if self.size == 0:
-                self.head = 0
-                self.tail = 0
-            else:
-                self.tail = (self.tail - 1) % self.max_n
+        value = self.deque[self.tail]
+        self.deque[self.tail] = None
+        self.size -= 1
+
+        if self.size == 0:
+            self.head = 0
+            self.tail = 0
         else:
-            print('error')
+            self.tail = (self.tail - 1) % self.max_n
+        return value
 
     def pop_front(self):
-        if self.size != 0:
-            value = self.deque[self.head]
-            print(value)
+        if self.size == 0:
+            raise IndexError
 
-            self.deque[self.head] = None
-            self.size -= 1
-            if self.size == 0:
-                self.head = 0
-                self.tail = 0
-            else:
-                self.head = (self.head + 1) % self.max_n
+        value = self.deque[self.head]
+        self.deque[self.head] = None
+        self.size -= 1
+        if self.size == 0:
+            self.head = 0
+            self.tail = 0
         else:
-            print('error')
+            self.head = (self.head + 1) % self.max_n
+        return value
 
     def read_instruction(self, call):
-        if 'push_back' in call:
-            item = int(call[1])
-            return self.push_back(item)
-        if 'push_front' in call:
-            item = int(call[1])
-            return self.push_front(item)
-        if 'pop_front' in call:
-            return self.pop_front()
-        if 'pop_back' in call:
-            return self.pop_back()
+        if len(call) == 1:
+            return getattr(self, call[0])()
+        return getattr(self, call[0])(int(call[1]))
 
 
 if __name__ == "__main__":
@@ -80,6 +72,12 @@ if __name__ == "__main__":
     max_dequeue_size = int(input())
     deque = Deque(max_dequeue_size)
 
-    for i in range(number_of_instructions):
+    for _ in range(number_of_instructions):
         instruction = [x for x in input().split()]
-        deque.read_instruction(instruction)
+        try:
+            result = deque.read_instruction(instruction)
+            if len(instruction) == 1:
+                print(result)
+        except IndexError:
+            print('error')
+            continue
