@@ -9,15 +9,13 @@ key = {
     '9': 'wxyz'
 }
 
+
 def recursion(dictionary, digits, idx, res, result):
     if idx >= len(digits):
         result.append(res)
         return
 
-    digit = digits[idx]
-    letters = dictionary[digit]
-
-    for c in letters:
+    for c in dictionary[digits[idx]]:
         recursion(dictionary, digits, idx + 1, res + c, result)
 
 
