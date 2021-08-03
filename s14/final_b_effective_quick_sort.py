@@ -1,56 +1,41 @@
 def compare(a, b):
-    # Returns true if a > b
-    return [-a[1], a[2], a[0]] < [-b[1], b[2], b[0]]
+    return [a[1], -a[2], b[0]] < [b[1], -b[2], a[0]]
 
 
-def partition(arr, pivot):
-    left = []
-    center = []
-    right = []
-    for i in arr:
-        if i < pivot:
-            left.append(i)
+def for_partition(arr, left, right):
+    pivot = arr[right]
+    for i in range(left, right):
+        if compare(pivot, arr[i]):
+            arr[i], arr[left] = arr[left], arr[i]
+            left += 1
 
-        if i > pivot:
-            right.append(i)
-
-        if i == pivot:
-            center.append(i)
-
-    return left, center, right
+    arr[left], arr[right] = arr[right], arr[left]
+    return left
 
 
-def quick_sort(arr):
-    if len(arr) < 2:
-        return arr
-    else:
-        pivot = arr[len(arr)//2]
-        left, center, right = partition(arr, pivot)
-        return quick_sort(left) + center + quick_sort(right)
+def quick_sort(arr, left, right):
+    if len(arr) == 1:
+        return
+    if left < right:
+        partition = for_partition(arr, left, right)
+
+        quick_sort(arr, left, partition - 1)
+
+        quick_sort(arr, partition + 1, right)
 
 
 if __name__ == "__main__":
-    arr = [
-        ['alla', 4, 100],
-        ['gena', 6, 1000],
-        ['gosha', 2, 90],
-        ['rita', 2, 90],
-        ['timofey', 4, 80]
-    ]
+    competitors = []
+    n = int(input())
+    for _ in range(n):
+        inp = input().split()
+        inp[1] = int(inp[1])
+        inp[2] = int(inp[2])
 
-    arr2 = [
-        ['alla', 0, 0],
-        ['gena', 0, 0],
-        ['gosha', 0, 0],
-        ['rita', 0, 0],
-        ['timofey', 0, 0]
-    ]
+        competitors.append(
+            [x for x in inp]
+        )
 
-    alla = arr[0]
-    gena = arr[1]
-
-    # print(compare(arr[0], arr[1]))
-
-    nums = [5, 7, 4, 3, 6]
-    n = quick_sort(nums)
-    print(n)
+    quick_sort(competitors, 0, n - 1)
+    for competitor in competitors:
+        print(competitor[0])
