@@ -1,41 +1,48 @@
-def compare(a, b):
-    return [a[1], -a[2], b[0]] < [b[1], -b[2], a[0]]
+# https://contest.yandex.ru/contest/24735/run-report/52285873/
 
+class Competitor:
+    def __init__(self, name, solutions, penalty):
+        self.name = name
+        self.solutions = solutions
+        self.penalty = penalty
+        self.standing = (-self.solutions, self.penalty, self.name)
 
-def for_partition(arr, left, right):
-    pivot = arr[right]
-    for i in range(left, right):
-        if compare(pivot, arr[i]):
-            arr[i], arr[left] = arr[left], arr[i]
-            left += 1
-
-    arr[left], arr[right] = arr[right], arr[left]
-    return left
+    def compare(self, other):
+        return self.standing > other.standing
 
 
 def quick_sort(arr, left, right):
-    if len(arr) == 1:
-        return
     if left < right:
-        partition = for_partition(arr, left, right)
+        def partition(arr, left, right):
+            pivot = arr[right]
+            for i in range(left, right):
+                if pivot.compare(arr[i]):
+                    arr[i], arr[left] = arr[left], arr[i]
+                    left += 1
 
-        quick_sort(arr, left, partition - 1)
+            arr[left], arr[right] = arr[right], arr[left]
+            return left
 
-        quick_sort(arr, partition + 1, right)
+        border = partition(arr, left, right)
+
+        quick_sort(arr, left, border - 1)
+        quick_sort(arr, border + 1, right)
 
 
 if __name__ == "__main__":
     competitors = []
-    n = int(input())
-    for _ in range(n):
-        inp = input().split()
-        inp[1] = int(inp[1])
-        inp[2] = int(inp[2])
+    competitors_count = int(input())
+    for _ in range(competitors_count):
+        competitor_input = input().split()
 
-        competitors.append(
-            [x for x in inp]
+        competitor = Competitor(
+            competitor_input[0],
+            int(competitor_input[1]),
+            int(competitor_input[2])
         )
 
-    quick_sort(competitors, 0, n - 1)
+        competitors.append(competitor)
+
+    quick_sort(competitors, 0, competitors_count - 1)
     for competitor in competitors:
-        print(competitor[0])
+        print(competitor.name)
