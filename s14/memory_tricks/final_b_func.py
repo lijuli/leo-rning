@@ -1,3 +1,6 @@
+# https://contest.yandex.ru/contest/24735/run-report/52292957/
+import dis
+
 class Competitor:
     """
     Class that holds information about competitor in competition or game.
@@ -27,18 +30,19 @@ class Competitor:
 def quick_sort(arr: list, left: int, right: int):
     """Implements in-place quick sort algorithm."""
     if left < right:
-        def partition(arr: list, left: int, right: int) -> int:
-            """Implements Lomuto partition algorithm."""
-            pivot = arr[right]
-            for index in range(left, right):
-                if pivot.__gt__(arr[index]):
-                    arr[index], arr[left] = arr[left], arr[index]
-                    left += 1
+        # def partition(arr: list, left: int, right: int) -> int:
+        #     """Implements Lomuto partition algorithm."""
+        left_temp = left
+        pivot = arr[right]
+        for index in range(left, right):
+            if pivot.__gt__(arr[index]):
+                arr[index], arr[left_temp] = arr[left_temp], arr[index]
+                left_temp += 1
 
-            arr[left], arr[right] = arr[right], arr[left]
-            return left
+        arr[left], arr[right] = arr[right], arr[left]
+            # return left
 
-        border = partition(arr, left, right)
+        border = left_temp  # partition(arr, left, right)
 
         quick_sort(arr, left, border - 1)
         quick_sort(arr, border + 1, right)
@@ -61,3 +65,4 @@ if __name__ == "__main__":
     quick_sort(competitors, 0, competitors_count - 1)
     for competitor in competitors:
         print(competitor.name)
+    dis.dis(quick_sort)
